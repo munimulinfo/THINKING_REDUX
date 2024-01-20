@@ -1,34 +1,30 @@
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
-import { Button } from "../ui/button";
-import { useState } from "react";
-
-const TodoFilter = () => {
-  const [position, setPosition] = useState("bottom");
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Dispatch, SetStateAction } from "react";
+type TTodoFilterProps = {
+  priority: string;
+  setPriority: Dispatch<SetStateAction<string>>;
+};
+const TodoFilter = ({ priority, setPriority }: TTodoFilterProps) => {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button className="bg-button-gradient text-lg text-black font-semibold uppercase font-sans">
-          Filter
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="h-full w-full p-4 rounded-lg  bg-white shadow-sm">
-        <DropdownMenuLabel>Filter By Piority</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-          <DropdownMenuRadioItem value="high">high</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="medium">medium</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="low">Low</DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Select onValueChange={(priority) => setPriority(priority)}>
+      <SelectTrigger className="w-[180px] bg-button-gradient text-black font-sans uppercase font-bold">
+        <SelectValue placeholder="Select Priority" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectItem value="low">low</SelectItem>
+          <SelectItem value="high">high</SelectItem>
+          <SelectItem value="medium">medium</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
   );
 };
 

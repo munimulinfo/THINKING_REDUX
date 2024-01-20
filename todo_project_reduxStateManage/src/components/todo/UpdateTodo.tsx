@@ -18,35 +18,59 @@ import { DialogFooter, DialogHeader } from "../ui/dialog";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../ui/input";
 import { FormEvent, useState } from "react";
-import { useAddTodoMutation } from "@/redux/api/api";
+import { useUpdateTodoMutation } from "@/redux/api/api";
 // import { useAppDispatch } from "@/redux/hook";
 // import { addTodo } from "@/redux/featuers/todoSlice";
-
-function AddTodoModal() {
+type TupdateProps = {
+  _id: string;
+  isCompleted: boolean | undefined;
+};
+function UpdateTodo({ _id, isCompleted }: TupdateProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
   //From redux Local state mangage clinet side
   // const dispatch = useAppDispatch();
   // From Server Side
-  const [addTodo] = useAddTodoMutation();
+  const [updateTodo] = useUpdateTodoMutation();
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleUpdate = (e: FormEvent) => {
     e.preventDefault();
     // const randomstring = Math.random().toString(36).substring(2, 7);
-    const data = { title, description, priority, isCompleted: false };
+    const options = {
+      id: _id,
+      data: {
+        title,
+        description,
+        priority,
+        isCompleted,
+      },
+    };
 
     //From Local state Manage
     // dispatch(addTodo(data));
     // From server manage
-    addTodo(data);
+    updateTodo(options);
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-button-gradient text-lg text-black font-semibold uppercase font-sans">
-          Add Todo
+        <Button className="bg-purple-600 text-white ">
+          <svg
+            className="size-5"
+            fill="none"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+            ></path>
+          </svg>
         </Button>
       </DialogTrigger>
       <DialogContent className=" w-full max-w-[400px] h-full p-5 bg-white shadow-lg">
@@ -56,7 +80,7 @@ function AddTodoModal() {
             Filup This Form And Your Task Count on Ui.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleUpdate}>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
@@ -108,4 +132,4 @@ function AddTodoModal() {
   );
 }
 
-export default AddTodoModal;
+export default UpdateTodo;
